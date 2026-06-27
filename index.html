@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GrafKom &mdash; Eksplorasi Parametric Algorithm</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="sheet-texture"></div>
+
+    <nav class="navbar">
+      <div class="nav-brand">
+        <!-- <span class="nav-brand-mark">&#x2622;</span> -->
+        <div class="nav-brand-text">
+          <span class="nav-brand-title">ES TEH HANGAT MANIS</span>
+          <span class="nav-brand-sub">parametric algorithm project</span>
+        </div>
+      </div>
+
+      <div class="nav-links" id="nav-links">
+        <div class="nav-indicator" id="nav-indicator"></div>
+        <button class="nav-link active" data-curve="circle">
+          <span class="nav-link-num">01</span>
+          <span class="nav-link-label">Lingkaran</span>
+        </button>
+        <button class="nav-link" data-curve="ellipse">
+          <span class="nav-link-num">02</span>
+          <span class="nav-link-label">Elips</span>
+        </button>
+        <button class="nav-link" data-curve="parabola">
+          <span class="nav-link-num">03</span>
+          <span class="nav-link-label">Parabola</span>
+        </button>
+        <button class="nav-link" data-curve="hyperbola">
+          <span class="nav-link-num">04</span>
+          <span class="nav-link-label">Hiperbola</span>
+        </button>
+      </div>
+    </nav>
+
+    <main id="main-stage">
+      <!-- CIRCLE -->
+      <section class="curve-page" id="page-circle" data-curve="circle">
+        <header class="page-head">
+          <div class="page-head-left">
+            <span class="page-eyebrow"
+              >01 &mdash; Algoritma Parametrik Pertama</span
+            >
+            <h1 class="page-title" data-typewriter data-label="Lingkaran">
+              Lingkaran
+            </h1>
+          </div>
+          <div class="page-head-right">
+            <p class="page-desc">
+              Kasus khusus elips di mana radius horizontal dan vertikal bernilai
+              sama. Satu konstanta <b>r</b> mengontrol seluruh bentuk.
+            </p>
+            <p class="page-formula">
+              x = x<sub>c</sub> + r&middot;cos(t) &nbsp;&nbsp; y = y<sub>c</sub>
+              + r&middot;sin(t)
+            </p>
+          </div>
+        </header>
+
+        <div class="layout-grid">
+          <aside class="controls-col">
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Parameter Kurva</h2>
+              <div class="field">
+                <label
+                  >Radius (r)
+                  <span class="val" data-out="circle-r">3.00</span></label
+                >
+                <input
+                  type="range"
+                  id="circle-r"
+                  min="0.5"
+                  max="6"
+                  step="0.1"
+                  value="3"
+                />
+                <div class="hint">
+                  Jarak tetap dari pusat ke seluruh titik kurva.
+                </div>
+              </div>
+              <div class="field">
+                <label
+                  >Pusat x<sub>c</sub>
+                  <span class="val" data-out="circle-xc">0.00</span></label
+                >
+                <input
+                  type="range"
+                  id="circle-xc"
+                  min="-4"
+                  max="4"
+                  step="0.1"
+                  value="0"
+                />
+              </div>
+              <div class="field">
+                <label
+                  >Pusat y<sub>c</sub>
+                  <span class="val" data-out="circle-yc">0.00</span></label
+                >
+                <input
+                  type="range"
+                  id="circle-yc"
+                  min="-4"
+                  max="4"
+                  step="0.1"
+                  value="0"
+                />
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Satuan Sudut</h2>
+              <div class="mode-row" data-unit-toggle="circle">
+                <button data-unit="radian" class="active">RADIAN</button>
+                <button data-unit="degree">DERAJAT</button>
+                <button data-unit="both">KEDUANYA</button>
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Langkah Iterasi (&Delta;t)</h2>
+              <div class="field">
+                <label
+                  >Delta / step
+                  <span class="val" data-out="circle-delta"
+                    >0.300 rad</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="circle-delta"
+                  min="0.02"
+                  max="1.2"
+                  step="0.01"
+                  value="0.3"
+                />
+                <div class="ticks">
+                  <span>0.02 halus</span><span>1.2 kasar</span>
+                </div>
+              </div>
+              <label class="toggle-points">
+                <input type="checkbox" id="circle-showPoints" checked />
+                <span>Tampilkan titik iterasi</span>
+              </label>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Metrik Komputasi</h2>
+              <div class="metric">
+                <span class="k">Jumlah titik</span
+                ><span class="v" data-out="circle-n">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Evaluasi trig (sin+cos)</span
+                ><span class="v" data-out="circle-evals">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Segmen garis</span
+                ><span class="v" data-out="circle-segments">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Beban relatif</span
+                ><span class="v" data-out="circle-load">&mdash;</span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="stage-col">
+            <div class="panel stage-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Bidang Kartesius</h2>
+                <span class="badge" data-out="circle-badge"
+                  >n = &mdash; titik</span
+                >
+              </div>
+              <svg id="circle-plot" viewBox="0 0 760 560"></svg>
+              <div class="legend">
+                <span
+                  ><i style="background: var(--accent)"></i> Kurva
+                  lingkaran</span
+                >
+                <span><i class="dot"></i> Titik hasil iterasi</span>
+                <span
+                  ><i style="background: var(--accent-3)"></i> Pusat
+                  (x<sub>c</sub>,y<sub>c</sub>)</span
+                >
+              </div>
+            </div>
+
+            <div class="panel table-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Tabel Koordinat Hasil Perulangan</h2>
+                <span class="badge" data-out="circle-tablebadge"
+                  >&mdash; baris</span
+                >
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>i</th>
+                      <th data-th="circle-t">t (rad)</th>
+                      <th>x</th>
+                      <th>y</th>
+                    </tr>
+                  </thead>
+                  <tbody data-out="circle-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ELLIPSE ===================== -->
+      <section class="curve-page" id="page-ellipse" data-curve="ellipse" hidden>
+        <header class="page-head">
+          <div class="page-head-left">
+            <span class="page-eyebrow"
+              >02 &mdash; Algoritma Parametrik Kedua</span
+            >
+            <h1 class="page-title" data-typewriter data-label="Elips">Elips</h1>
+          </div>
+          <div class="page-head-right">
+            <p class="page-desc">
+              Dua konstanta independen, <b>a</b> (radius horizontal) dan
+              <b>b</b> (radius vertikal), membentuk kurva yang memanjang ke satu
+              sumbu.
+            </p>
+            <p class="page-formula">
+              x = x<sub>c</sub> + a&middot;cos(t) &nbsp;&nbsp; y = y<sub>c</sub>
+              + b&middot;sin(t)
+            </p>
+          </div>
+        </header>
+
+        <div class="layout-grid">
+          <aside class="controls-col">
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Parameter Kurva</h2>
+              <div class="field">
+                <label
+                  >Radius horizontal (a)
+                  <span class="val" data-out="ellipse-a">6.00</span></label
+                >
+                <input
+                  type="range"
+                  id="ellipse-a"
+                  min="0.5"
+                  max="6"
+                  step="0.1"
+                  value="6"
+                />
+              </div>
+              <div class="field">
+                <label
+                  >Radius vertikal (b)
+                  <span class="val" data-out="ellipse-b">3.00</span></label
+                >
+                <input
+                  type="range"
+                  id="ellipse-b"
+                  min="0.5"
+                  max="6"
+                  step="0.1"
+                  value="3"
+                />
+                <div class="hint">
+                  a &gt; b &rarr; elips horizontal. a &lt; b &rarr; elips
+                  vertikal.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Satuan Sudut</h2>
+              <div class="mode-row" data-unit-toggle="ellipse">
+                <button data-unit="radian" class="active">RADIAN</button>
+                <button data-unit="degree">DERAJAT</button>
+                <button data-unit="both">KEDUANYA</button>
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Langkah Iterasi (&Delta;t)</h2>
+              <div class="field">
+                <label
+                  >Delta / step
+                  <span class="val" data-out="ellipse-delta"
+                    >0.300 rad</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="ellipse-delta"
+                  min="0.02"
+                  max="1.2"
+                  step="0.01"
+                  value="0.3"
+                />
+                <div class="ticks">
+                  <span>0.02 halus</span><span>1.2 kasar</span>
+                </div>
+              </div>
+              <label class="toggle-points">
+                <input type="checkbox" id="ellipse-showPoints" checked />
+                <span>Tampilkan titik iterasi</span>
+              </label>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Metrik Komputasi</h2>
+              <div class="metric">
+                <span class="k">Jumlah titik</span
+                ><span class="v" data-out="ellipse-n">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Evaluasi trig (sin+cos)</span
+                ><span class="v" data-out="ellipse-evals">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Segmen garis</span
+                ><span class="v" data-out="ellipse-segments">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Beban relatif</span
+                ><span class="v" data-out="ellipse-load">&mdash;</span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="stage-col">
+            <div class="panel stage-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Bidang Kartesius</h2>
+                <span class="badge" data-out="ellipse-badge"
+                  >n = &mdash; titik</span
+                >
+              </div>
+              <svg id="ellipse-plot" viewBox="0 0 760 560"></svg>
+              <div class="legend">
+                <span
+                  ><i style="background: var(--accent)"></i> Kurva elips</span
+                >
+                <span><i class="dot"></i> Titik hasil iterasi</span>
+                <span
+                  ><i style="background: var(--accent-3)"></i> Pusat (0,0)</span
+                >
+              </div>
+            </div>
+
+            <div class="panel table-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Tabel Koordinat Hasil Perulangan</h2>
+                <span class="badge" data-out="ellipse-tablebadge"
+                  >&mdash; baris</span
+                >
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>i</th>
+                      <th data-th="ellipse-t">t (rad)</th>
+                      <th>x</th>
+                      <th>y</th>
+                    </tr>
+                  </thead>
+                  <tbody data-out="ellipse-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PARABOLA ===================== -->
+      <section
+        class="curve-page"
+        id="page-parabola"
+        data-curve="parabola"
+        hidden
+      >
+        <header class="page-head">
+          <div class="page-head-left">
+            <span class="page-eyebrow"
+              >03 &mdash; Algoritma Parametrik Ketiga</span
+            >
+            <h1 class="page-title" data-typewriter data-label="Parabola">
+              Parabola
+            </h1>
+          </div>
+          <div class="page-head-right">
+            <p class="page-desc">
+              Konstanta <b>a</b> menentukan jarak fokus dan seberapa
+              lebar/sempit lengkungan parabola membuka.
+            </p>
+            <p class="page-formula">
+              x = a&middot;t<sup>2</sup> &nbsp;&nbsp; y = 2&middot;a&middot;t
+            </p>
+          </div>
+        </header>
+
+        <div class="layout-grid">
+          <aside class="controls-col">
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Parameter Kurva</h2>
+              <div class="field">
+                <label
+                  >Konstanta fokus (a)
+                  <span class="val" data-out="parabola-a">1.50</span></label
+                >
+                <input
+                  type="range"
+                  id="parabola-a"
+                  min="0.3"
+                  max="4"
+                  step="0.1"
+                  value="1.5"
+                />
+                <div class="hint">
+                  Jarak vertex ke fokus. a besar &rarr; parabola lebih
+                  lebar/landai.
+                </div>
+              </div>
+              <div class="field">
+                <label
+                  >Rentang parameter t
+                  <span class="val" data-out="parabola-trange"
+                    >&plusmn;3.00</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="parabola-trange"
+                  min="0.5"
+                  max="5"
+                  step="0.1"
+                  value="3"
+                />
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Satuan Parameter</h2>
+              <div class="hint" style="margin-top: -4px">
+                Parabola tidak memakai sudut; t di sini adalah parameter linear
+                bebas, bukan radian/derajat.
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Langkah Iterasi (&Delta;t)</h2>
+              <div class="field">
+                <label
+                  >Delta / step
+                  <span class="val" data-out="parabola-delta"
+                    >0.300</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="parabola-delta"
+                  min="0.02"
+                  max="1.2"
+                  step="0.01"
+                  value="0.3"
+                />
+                <div class="ticks">
+                  <span>0.02 halus</span><span>1.2 kasar</span>
+                </div>
+              </div>
+              <label class="toggle-points">
+                <input type="checkbox" id="parabola-showPoints" checked />
+                <span>Tampilkan titik iterasi</span>
+              </label>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Metrik Komputasi</h2>
+              <div class="metric">
+                <span class="k">Jumlah titik</span
+                ><span class="v" data-out="parabola-n">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Evaluasi (t&sup2;, 2at)</span
+                ><span class="v" data-out="parabola-evals">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Segmen garis</span
+                ><span class="v" data-out="parabola-segments">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Beban relatif</span
+                ><span class="v" data-out="parabola-load">&mdash;</span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="stage-col">
+            <div class="panel stage-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Bidang Kartesius</h2>
+                <span class="badge" data-out="parabola-badge"
+                  >n = &mdash; titik</span
+                >
+              </div>
+              <svg id="parabola-plot" viewBox="0 0 760 560"></svg>
+              <div class="legend">
+                <span
+                  ><i style="background: var(--accent)"></i> Kurva
+                  parabola</span
+                >
+                <span><i class="dot"></i> Titik hasil iterasi</span>
+                <span
+                  ><i style="background: var(--accent-3)"></i> Vertex
+                  (0,0)</span
+                >
+              </div>
+            </div>
+
+            <div class="panel table-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Tabel Koordinat Hasil Perulangan</h2>
+                <span class="badge" data-out="parabola-tablebadge"
+                  >&mdash; baris</span
+                >
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>i</th>
+                      <th>t</th>
+                      <th>x</th>
+                      <th>y</th>
+                    </tr>
+                  </thead>
+                  <tbody data-out="parabola-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== HYPERBOLA ===================== -->
+      <section
+        class="curve-page"
+        id="page-hyperbola"
+        data-curve="hyperbola"
+        hidden
+      >
+        <header class="page-head">
+          <div class="page-head-left">
+            <span class="page-eyebrow"
+              >04 &mdash; Algoritma Parametrik Keempat</span
+            >
+            <h1 class="page-title" data-typewriter data-label="Hiperbola">
+              Hiperbola
+            </h1>
+          </div>
+          <div class="page-head-right">
+            <p class="page-desc">
+              Dua cabang terbuka menjauhi pusat. <b>a</b> mengontrol jarak
+              puncak, <b>b</b> mengontrol kemiringan asimtot.
+            </p>
+            <p class="page-formula">
+              x = a / cos(t) &nbsp;&nbsp; y = b&middot;tan(t)
+            </p>
+          </div>
+        </header>
+
+        <div class="layout-grid">
+          <aside class="controls-col">
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Parameter Kurva</h2>
+              <div class="field">
+                <label
+                  >Semi-sumbu transversal (a)
+                  <span class="val" data-out="hyperbola-a">2.00</span></label
+                >
+                <input
+                  type="range"
+                  id="hyperbola-a"
+                  min="0.5"
+                  max="5"
+                  step="0.1"
+                  value="2"
+                />
+                <div class="hint">
+                  Jarak pusat ke puncak. Mengontrol seberapa jauh kedua cabang
+                  terpisah.
+                </div>
+              </div>
+              <div class="field">
+                <label
+                  >Semi-sumbu konjugasi (b)
+                  <span class="val" data-out="hyperbola-b">1.50</span></label
+                >
+                <input
+                  type="range"
+                  id="hyperbola-b"
+                  min="0.5"
+                  max="5"
+                  step="0.1"
+                  value="1.5"
+                />
+                <div class="hint">
+                  Bersama a, menentukan kemiringan asimtot: y = &plusmn;(b/a)x.
+                </div>
+              </div>
+              <div class="field">
+                <label
+                  >Rentang parameter t
+                  <span class="val" data-out="hyperbola-trange"
+                    >&plusmn;1.20</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="hyperbola-trange"
+                  min="0.4"
+                  max="1.45"
+                  step="0.05"
+                  value="1.2"
+                />
+                <div class="hint">
+                  Batas sudut sebelum mendekati asimtot (singularitas cos t =
+                  0).
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Satuan Sudut</h2>
+              <div class="mode-row" data-unit-toggle="hyperbola">
+                <button data-unit="radian" class="active">RADIAN</button>
+                <button data-unit="degree">DERAJAT</button>
+                <button data-unit="both">KEDUANYA</button>
+              </div>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Langkah Iterasi (&Delta;t)</h2>
+              <div class="field">
+                <label
+                  >Delta / step
+                  <span class="val" data-out="hyperbola-delta"
+                    >0.300 rad</span
+                  ></label
+                >
+                <input
+                  type="range"
+                  id="hyperbola-delta"
+                  min="0.02"
+                  max="1.0"
+                  step="0.01"
+                  value="0.3"
+                />
+                <div class="ticks">
+                  <span>0.02 halus</span><span>1.0 kasar</span>
+                </div>
+              </div>
+              <label class="toggle-points">
+                <input type="checkbox" id="hyperbola-showPoints" checked />
+                <span>Tampilkan titik iterasi</span>
+              </label>
+            </div>
+
+            <div class="panel" data-reveal>
+              <h2 class="panel-title">Metrik Komputasi</h2>
+              <div class="metric">
+                <span class="k">Jumlah titik / cabang</span
+                ><span class="v" data-out="hyperbola-n">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Total titik (2 cabang)</span
+                ><span class="v" data-out="hyperbola-total">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Evaluasi cos+tan</span
+                ><span class="v" data-out="hyperbola-evals">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Segmen garis</span
+                ><span class="v" data-out="hyperbola-segments">&mdash;</span>
+              </div>
+              <div class="metric">
+                <span class="k">Beban relatif</span
+                ><span class="v" data-out="hyperbola-load">&mdash;</span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="stage-col">
+            <div class="panel stage-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Bidang Kartesius</h2>
+                <span class="badge" data-out="hyperbola-badge"
+                  >n = &mdash; titik</span
+                >
+              </div>
+              <svg id="hyperbola-plot" viewBox="0 0 760 560"></svg>
+              <div class="legend">
+                <span
+                  ><i style="background: var(--accent)"></i> Cabang kanan</span
+                >
+                <span
+                  ><i style="background: var(--accent-2)"></i> Cabang kiri</span
+                >
+                <span><i style="background: var(--accent-3)"></i> Asimtot</span>
+                <span><i class="dot"></i> Puncak (&plusmn;a, 0)</span>
+              </div>
+            </div>
+
+            <div class="panel table-panel" data-reveal>
+              <div class="stage-head">
+                <h2 class="panel-title">Tabel Koordinat Hasil Perulangan</h2>
+                <span class="badge" data-out="hyperbola-tablebadge"
+                  >&mdash; baris</span
+                >
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>i</th>
+                      <th data-th="hyperbola-t">t (rad)</th>
+                      <th>x kanan</th>
+                      <th>y kanan</th>
+                      <th>x kiri</th>
+                      <th>y kiri</th>
+                    </tr>
+                  </thead>
+                  <tbody data-out="hyperbola-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <span
+        >Tugas Computer Graphics &middot; Parametric Conic Curve
+        Generation</span
+      >
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
