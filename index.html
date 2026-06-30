@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GrafKom &mdash; Eksplorasi Parametric Algorithm</title>
+    <title>GrafKom &mdash; Parametric Algorithm</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -11,10 +11,9 @@
 
     <nav class="navbar">
       <div class="nav-brand">
-        <!-- <span class="nav-brand-mark">&#x2622;</span> -->
         <div class="nav-brand-text">
           <span class="nav-brand-title">ES TEH HANGAT MANIS</span>
-          <span class="nav-brand-sub">parametric algorithm project</span>
+          <span class="nav-brand-sub">parametric algorithms project</span>
         </div>
       </div>
 
@@ -40,12 +39,12 @@
     </nav>
 
     <main id="main-stage">
-      <!-- CIRCLE -->
+      <!-- ===================== CIRCLE ===================== -->
       <section class="curve-page" id="page-circle" data-curve="circle">
         <header class="page-head">
           <div class="page-head-left">
             <span class="page-eyebrow"
-              >01 &mdash; Algoritma Parametrik Pertama</span
+              >01 &mdash; Algoritma Parametric Pertama</span
             >
             <h1 class="page-title" data-typewriter data-label="Lingkaran">
               Lingkaran
@@ -223,7 +222,7 @@
         <header class="page-head">
           <div class="page-head-left">
             <span class="page-eyebrow"
-              >02 &mdash; Algoritma Parametrik Kedua</span
+              >02 &mdash; Algoritma Parametric Kedua</span
             >
             <h1 class="page-title" data-typewriter data-label="Elips">Elips</h1>
           </div>
@@ -390,7 +389,7 @@
         <header class="page-head">
           <div class="page-head-left">
             <span class="page-eyebrow"
-              >03 &mdash; Algoritma Parametrik Ketiga</span
+              >03 &mdash; Algoritma Parametric Ketiga</span
             >
             <h1 class="page-title" data-typewriter data-label="Parabola">
               Parabola
@@ -431,19 +430,35 @@
               </div>
               <div class="field">
                 <label
-                  >Rentang parameter t
-                  <span class="val" data-out="parabola-trange"
-                    >&plusmn;3.00</span
-                  ></label
+                  >Limit bawah (t<sub>1</sub>)
+                  <span class="val" data-out="parabola-t1">-3.00</span></label
                 >
                 <input
                   type="range"
-                  id="parabola-trange"
-                  min="0.5"
+                  id="parabola-t1"
+                  min="-5"
+                  max="4.9"
+                  step="0.1"
+                  value="-3"
+                />
+              </div>
+              <div class="field">
+                <label
+                  >Limit atas (t<sub>2</sub>)
+                  <span class="val" data-out="parabola-t2">3.00</span></label
+                >
+                <input
+                  type="range"
+                  id="parabola-t2"
+                  min="-4.9"
                   max="5"
                   step="0.1"
                   value="3"
                 />
+                <div class="hint">
+                  t berjalan dari t<sub>1</sub> ke t<sub>2</sub>. Tidak harus
+                  simetris terhadap 0.
+                </div>
               </div>
             </div>
 
@@ -517,7 +532,8 @@
                   ><i style="background: var(--accent)"></i> Kurva
                   parabola</span
                 >
-                <span><i class="dot"></i> Titik hasil iterasi</span>
+                <span><i class="dot"></i> Titik iterasi</span>
+                <span><i class="diamond"></i> t₁ / t₂ endpoint</span>
                 <span
                   ><i style="background: var(--accent-3)"></i> Vertex
                   (0,0)</span
@@ -560,7 +576,7 @@
         <header class="page-head">
           <div class="page-head-left">
             <span class="page-eyebrow"
-              >04 &mdash; Algoritma Parametrik Keempat</span
+              >04 &mdash; Algoritma Parametric Keempat</span
             >
             <h1 class="page-title" data-typewriter data-label="Hiperbola">
               Hiperbola
@@ -618,22 +634,35 @@
               </div>
               <div class="field">
                 <label
-                  >Rentang parameter t
-                  <span class="val" data-out="hyperbola-trange"
-                    >&plusmn;1.20</span
-                  ></label
+                  >Limit bawah (t<sub>1</sub>)
+                  <span class="val" data-out="hyperbola-t1">-1.20</span></label
                 >
                 <input
                   type="range"
-                  id="hyperbola-trange"
-                  min="0.4"
+                  id="hyperbola-t1"
+                  min="-1.5"
                   max="1.45"
+                  step="0.05"
+                  value="-1.2"
+                />
+              </div>
+              <div class="field">
+                <label
+                  >Limit atas (t<sub>2</sub>)
+                  <span class="val" data-out="hyperbola-t2">1.20</span></label
+                >
+                <input
+                  type="range"
+                  id="hyperbola-t2"
+                  min="-1.45"
+                  max="1.5"
                   step="0.05"
                   value="1.2"
                 />
                 <div class="hint">
-                  Batas sudut sebelum mendekati asimtot (singularitas cos t =
-                  0).
+                  t berjalan dari t<sub>1</sub> ke t<sub>2</sub>. Dibatasi
+                  &plusmn;1.5 rad agar tidak menyentuh asimtot (singularitas cos
+                  t = 0 di &plusmn;&pi;/2).
                 </div>
               </div>
             </div>
@@ -716,7 +745,8 @@
                   ><i style="background: var(--accent-2)"></i> Cabang kiri</span
                 >
                 <span><i style="background: var(--accent-3)"></i> Asimtot</span>
-                <span><i class="dot"></i> Puncak (&plusmn;a, 0)</span>
+                <span><i class="dot"></i> Titik iterasi</span>
+                <span><i class="diamond"></i> t₁ / t₂ endpoint</span>
               </div>
             </div>
 
@@ -750,8 +780,8 @@
 
     <footer class="site-foot">
       <span
-        >Tugas Computer Graphics &middot; Parametric Conic Curve
-        Generation</span
+        >Es Teh Hangat &middot; Project Computer Graphics &middot; Parametric
+        algorithms Generation</span
       >
     </footer>
 

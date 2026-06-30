@@ -506,6 +506,14 @@ svg {
   background: var(--panel);
   border: 1.6px solid var(--accent);
 }
+.legend i.diamond {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: #5b3fa8;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
 
 .table-panel {
   margin-top: 18px;
